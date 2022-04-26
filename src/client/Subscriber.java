@@ -1,5 +1,7 @@
 package client;
 
+import java.util.List;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -12,15 +14,15 @@ import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+import client.ui.UpdateReadingPopup;
+
 public class Subscriber implements MessageListener {
 
  	private static String url = ActiveMQConnection.DEFAULT_BROKER_URL;
-	
- 	public static void main(String[] args) {
-		new Subscriber().initialize();
-	}
  	
-	public void initialize() {
+ 	private UpdateReadingPopup updateReadingPopup;
+
+	public void initialize(List<String> subscribedTopics) {
 		try {
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
 			Connection connection = connectionFactory.createConnection();
@@ -28,9 +30,13 @@ public class Subscriber implements MessageListener {
 			
 			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			
-			Destination dest = session.createTopic("TOPICO_TESTE");
-			MessageConsumer subscriber = session.createConsumer(dest);
-			subscriber.setMessageListener(this);
+			for (String topic : subscribedTopics) {
+				Destination dest = session.createTopic(topic);
+				MessageConsumer subscriber = session.createConsumer(dest);
+				subscriber.setMessageListener(this);	
+			}
+			
+			this.updateReadingPopup = new UpdateReadingPopup(subscribedTopics);			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -41,7 +47,7 @@ public class Subscriber implements MessageListener {
 	public void onMessage(Message message) {
 		if (message instanceof TextMessage) {
 			try {
-				System.out.println(((TextMessage) message).getText());
+				updateReadingPopup.receiveMessage(((TextMessage) message).getText());
 			} catch (Exception e) {
 				e.printStackTrace();			
 			}

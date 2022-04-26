@@ -1,10 +1,13 @@
 package sensor;
 
+import java.util.Scanner;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -19,7 +22,7 @@ public class Publisher {
 	
 	public void initialize(Sensor sensor) {
 		try {
-			String topic = sensor.getType() + "_" + sensor.getId();
+			String topic = sensor.getName();
 			
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
 			Connection connection = connectionFactory.createConnection();
@@ -33,7 +36,6 @@ public class Publisher {
 			
 //			while (true) {
 //				TextMessage message = session.createTextMessage();
-//				Scanner input = new Scanner(System.in);
 //				message.setText(input.nextLine());
 //				publisher.send(message);
 //			}
