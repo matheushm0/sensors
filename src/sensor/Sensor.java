@@ -4,12 +4,15 @@ public class Sensor {
 
 	private SensorType type;
 	private String id;
+	private String name;
 	private int minValue;
 	private int maxValue;
+	private int actualValue;
 
 	public Sensor(String id, SensorType type, int minValue, int maxValue) {
 		this.id = id;
 		this.type = type;
+		this.name = type + "_" + id;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 	}
@@ -30,6 +33,14 @@ public class Sensor {
 		this.type = type;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public int getMinValue() {
 		return minValue;
 	}
@@ -46,4 +57,11 @@ public class Sensor {
 		this.maxValue = maxValue;
 	}
 
+	public int getActualValue() {
+		return actualValue;
+	}
+
+	public void setActualValue(int actualValue) {
+		this.actualValue = actualValue;
+	}
 }

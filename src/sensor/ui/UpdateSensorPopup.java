@@ -67,7 +67,7 @@ public class UpdateSensorPopup extends JFrame {
 	private void setUpGUI() {
 		this.setResizable(false);
 		this.setSize(600, 380);
-		this.setTitle("Sensor de " + sensor.getType() + " " + sensor.getId());
+		this.setTitle("Sensor de " + sensor.getName());
 		this.setBackground(Color.WHITE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setContentPane(new JLabel());		
@@ -231,17 +231,20 @@ public class UpdateSensorPopup extends JFrame {
 				
 				updateSensorValueTextField.setText("");
 				sensorValueLabel.setText(String.valueOf(updateValue) + " " + sensor.getType().getUnit());
+				sensor.setActualValue(updateValue);
 				
 				//TODO Send value to publisher
+				System.out.println(sensor.getName() + ": O valor medido pelo sensor foi alterado para " 
+							+ updateValue + " " + sensor.getType().getUnit());
 				
 				if (updateValue < sensor.getMinValue()) {
-					System.out.println("O valor atual é menor que o valor mínimo! "
+					System.out.println(sensor.getName() + ": O valor atual é menor que o valor mínimo! "
 							+ "Valor atual: " + updateValue + " " + sensor.getType().getUnit() + " "
 							+ "Valor mínimo: " + sensor.getMinValue() + " " + sensor.getType().getUnit());
 				}
 				
 				if (updateValue > sensor.getMaxValue()) {
-					System.out.println("O valor atual é maior que o valor máximo! "
+					System.out.println(sensor.getName() + ": O valor atual é maior que o valor máximo! "
 							+ "Valor atual: " + updateValue + " " + sensor.getType().getUnit() + " "
 							+ "Valor máximo: " + sensor.getMaxValue() + " " + sensor.getType().getUnit());
 				}
@@ -261,6 +264,21 @@ public class UpdateSensorPopup extends JFrame {
 				minValueLabel.setText(String.valueOf(minValue) + " " + sensor.getType().getUnit());
 				sensor.setMinValue(minValue);
 				
+				System.out.println(sensor.getName() + ": O valor mínimo permitido pelo sensor foi alterado para " 
+						+ minValue + " " + sensor.getType().getUnit());
+			
+				if (minValue > sensor.getActualValue()) {
+					System.out.println(sensor.getName() + ": O valor mínimo é maior que o valor atual! "
+							+ "Valor mínimo: " + minValue + " " + sensor.getType().getUnit() + " "
+							+ "Valor atual: " + sensor.getActualValue() + " " + sensor.getType().getUnit());
+				}
+				
+				if (minValue > sensor.getMaxValue()) {
+					System.out.println(sensor.getName() + ": O valor mínimo é maior que o valor máximo! "
+							+ "Valor mínimo: " + minValue + " " + sensor.getType().getUnit() + " "
+							+ "Valor máximo: " + sensor.getMaxValue() + " " + sensor.getType().getUnit());
+				}				
+				
 				break;
 	
 			case MAX_VALUE:
@@ -275,6 +293,21 @@ public class UpdateSensorPopup extends JFrame {
 				maxValueTextField.setText("");
 				maxValueLabel.setText(String.valueOf(maxValue) + " " + sensor.getType().getUnit());
 				sensor.setMaxValue(maxValue);
+				
+				System.out.println(sensor.getName() + ": O valor máximo permitido pelo sensor foi alterado para " 
+						+ maxValue + " " + sensor.getType().getUnit());
+			
+				if (maxValue < sensor.getMinValue()) {
+					System.out.println(sensor.getName() + ": O valor máximo é menor que o valor mínimo! "
+							+ "Valor máximo: " + maxValue + " " + sensor.getType().getUnit() + " "
+							+ "Valor mínimo: " + sensor.getMinValue() + " " + sensor.getType().getUnit());
+				}
+				
+				if (maxValue < sensor.getActualValue()) {
+					System.out.println(sensor.getName() + ": O valor máximo é menor que o valor atual! "
+							+ "Valor máximo: " + maxValue + " " + sensor.getType().getUnit() + " "
+							+ "Valor atual: " + sensor.getActualValue() + " " + sensor.getType().getUnit());
+				}
 				
 				break;
 	
