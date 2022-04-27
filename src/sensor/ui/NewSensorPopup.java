@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import sensor.Publisher;
 import sensor.Sensor;
 import sensor.SensorType;
 
@@ -186,9 +185,7 @@ public class NewSensorPopup extends JFrame implements ActionListener {
 		String id = idTextField.getText();
 		
 		Sensor sensor = new Sensor(id, sensorType, minValue, maxValue);
-		
-		new Publisher().initialize(sensor);
-		
+				
 		this.setVisible(false);
 		new UpdateSensorPopup(sensor);		
 	}

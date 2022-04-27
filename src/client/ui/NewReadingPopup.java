@@ -125,7 +125,7 @@ public class NewReadingPopup extends JFrame implements ActionListener {
 			
 			this.setVisible(false);
 			
-			new Subscriber().initialize(subscribedTopics);
+			new Subscriber(subscribedTopics);
 		} 
 		else {
 			// TODO

@@ -22,7 +22,7 @@ public class Subscriber implements MessageListener {
  	
  	private UpdateReadingPopup updateReadingPopup;
 
-	public void initialize(List<String> subscribedTopics) {
+	public Subscriber(List<String> subscribedTopics) {
 		try {
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
 			Connection connection = connectionFactory.createConnection();

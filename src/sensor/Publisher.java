@@ -1,7 +1,5 @@
 package sensor;
 
-import java.util.Scanner;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -16,11 +14,22 @@ public class Publisher {
 
 	private static String url = ActiveMQConnection.DEFAULT_BROKER_URL;
 	
-	public void sendMessage(String message) {
-		
+	private MessageProducer publisher;
+	private Session session;
+	
+	public void sendMessage(String messageToSend) {
+		TextMessage message;
+		try {
+			message = session.createTextMessage();
+			message.setText(messageToSend);
+			publisher.send(message);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void initialize(Sensor sensor) {
+	public Publisher(Sensor sensor) {
 		try {
 			String topic = sensor.getName();
 			
@@ -28,18 +37,11 @@ public class Publisher {
 			Connection connection = connectionFactory.createConnection();
 			connection.start();
 			
-			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			
 			Destination dest = session.createTopic(topic);
 			
-			MessageProducer publisher = session.createProducer(dest);
-			
-//			while (true) {
-//				TextMessage message = session.createTextMessage();
-//				message.setText(input.nextLine());
-//				publisher.send(message);
-//			}
-			
+			publisher = session.createProducer(dest);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
