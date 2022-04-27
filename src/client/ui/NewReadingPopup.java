@@ -43,6 +43,7 @@ public class NewReadingPopup extends JFrame implements ActionListener {
 	private List<JCheckBox> topicsCheckBox;
 	private JButton confirmButton;
 	private JButton updateButton;
+	private JLabel errorLabel;
 
 	public NewReadingPopup() {
 		initComponents();
@@ -59,6 +60,8 @@ public class NewReadingPopup extends JFrame implements ActionListener {
 				
 		this.updateButton = new JButton();
 		this.confirmButton = new JButton();
+		
+		this.errorLabel = new JLabel();
 	}
 	
 	private void setUpGUI() {
@@ -128,8 +131,12 @@ public class NewReadingPopup extends JFrame implements ActionListener {
 			new Subscriber(subscribedTopics);
 		} 
 		else {
-			// TODO
-			System.out.println("Select any checkbox");
+			errorLabel.setText("Você deve escolher pelo menos um sensor!");
+			errorLabel.setForeground(Color.RED);
+			errorLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+			errorLabel.setBounds(70, 335, 300, 60);
+			
+			this.add(errorLabel);
 			return;
 		}
 

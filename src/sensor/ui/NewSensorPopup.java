@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 import sensor.Sensor;
 import sensor.SensorType;
@@ -134,26 +136,28 @@ public class NewSensorPopup extends JFrame implements ActionListener {
 		
 		if (idTextField.getText().isEmpty()) {
 			isValid = false;
-			//TODO
-			System.out.println("Field is required");
+			idTextField.setBorder(new LineBorder(Color.RED,1));
+		}
+		else {
+			idTextField.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
 		}
 		
 		try {
 			Integer.parseInt(minValueTextField.getText());
+			minValueTextField.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
 		}
 		catch (Exception e) {
 			isValid = false;
-			//TODO
-			System.out.println("Invalid Value");
+			minValueTextField.setBorder(new LineBorder(Color.RED,1));
 		}
 		
 		try {
 			Integer.parseInt(maxValueTextField.getText());
+			maxValueTextField.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
 		}
 		catch (Exception e) {
 			isValid = false;
-			//TODO
-			System.out.println("Invalid Value");
+			maxValueTextField.setBorder(new LineBorder(Color.RED,1));
 		}
 		
 		return isValid;

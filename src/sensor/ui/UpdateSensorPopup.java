@@ -12,6 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 import sensor.Publisher;
 import sensor.Sensor;
@@ -84,7 +86,7 @@ public class UpdateSensorPopup extends JFrame {
 		valueLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		valueLabel.setBounds(80, 50, 150, 30);
 		
-		sensorValueLabel.setText(String.valueOf(sensor.getMinValue()) + " " + sensor.getType().getUnit());
+		sensorValueLabel.setText("0 " + sensor.getType().getUnit());
 		sensorValueLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		sensorValueLabel.setBounds(200, 50, 150, 30);
 		
@@ -226,7 +228,7 @@ public class UpdateSensorPopup extends JFrame {
 		switch (buttonType) {
 			case UPDATE_VALUE:
 				
-				if (!validateField(updateSensorValueTextField.getText())) {
+				if (!validateField(updateSensorValueTextField.getText(), buttonType)) {
 					updateSensorValueTextField.setText("");
 					return;
 				}
@@ -256,7 +258,7 @@ public class UpdateSensorPopup extends JFrame {
 	
 			case MIN_VALUE:
 				
-				if (!validateField(minValueTextField.getText())) {
+				if (!validateField(minValueTextField.getText(), buttonType)) {
 					minValueTextField.setText("");
 					return;
 				}
@@ -286,7 +288,7 @@ public class UpdateSensorPopup extends JFrame {
 	
 			case MAX_VALUE:
 				
-				if (!validateField(maxValueTextField.getText())) {
+				if (!validateField(maxValueTextField.getText(), buttonType)) {
 					maxValueTextField.setText("");
 					return;
 				}
@@ -319,16 +321,38 @@ public class UpdateSensorPopup extends JFrame {
 		}
 	}
 	
-	public boolean validateField(String value) {
+	public boolean validateField(String value, String buttonType) {
 		boolean isValid = true;
 		
 		try {
 			Integer.parseInt(value);
+			
+			if (buttonType.equalsIgnoreCase(UPDATE_VALUE)) {
+				updateSensorValueTextField.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+			}
+			
+			if (buttonType.equalsIgnoreCase(MIN_VALUE)) {
+				minValueTextField.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+			}
+			
+			if (buttonType.equalsIgnoreCase(MAX_VALUE)) {
+				maxValueTextField.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+			}
 		}
 		catch (Exception e) {
 			isValid = false;
-			//TODO
-			System.out.println("Invalid Value: " + value);
+			
+			if (buttonType.equalsIgnoreCase(UPDATE_VALUE)) {
+				updateSensorValueTextField.setBorder(new LineBorder(Color.RED,1));
+			}
+			
+			if (buttonType.equalsIgnoreCase(MIN_VALUE)) {
+				minValueTextField.setBorder(new LineBorder(Color.RED,1));
+			}
+			
+			if (buttonType.equalsIgnoreCase(MAX_VALUE)) {
+				maxValueTextField.setBorder(new LineBorder(Color.RED,1));
+			}
 		}
 		
 		return isValid;
